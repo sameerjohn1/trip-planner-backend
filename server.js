@@ -9,9 +9,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ---------- Connect to Database ----------
-connectDB();
-
 // ---------- Core Middleware ----------
 app.use(cors());
 app.use(express.json());
@@ -34,6 +31,20 @@ app.get("/", (req, res) => {
     success: true,
     message: "Trip Maker API is running",
   });
+});
+
+// ---------- Database Middleware ----------
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error("Database unavailable:", error.message);
+    res.status(503).json({
+      success: false,
+      message: "Database temporarily unavailable",
+    });
+  }
 });
 
 // ---------- Auth Routes ----------
