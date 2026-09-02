@@ -147,6 +147,46 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// get me
+export const getMe = async (req, res) => {
+  try {
+    // req.user is attached by the `protect` middleware after verifying the JWT
+    const user = req.user;
+
+    if (!user) {
+      return sendError(
+        res,
+        HTTP_STATUS.UNAUTHORIZED,
+        "Not authorized, no user found",
+      );
+    }
+
+    return sendSuccess(
+      res,
+      HTTP_STATUS.OK,
+      "User profile fetched successfully",
+      {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          isActive: user.isActive,
+          createdAt: user.createdAt,
+        },
+      },
+    );
+  } catch (error) {
+    console.error("Get me error:", error);
+
+    return sendError(
+      res,
+      HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      "Internal server error",
+    );
+  }
+};
+
 // login
 export const loginUser = async (req, res) => {
   try {
