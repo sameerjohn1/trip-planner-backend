@@ -150,7 +150,6 @@ export const registerUser = async (req, res) => {
 // get me
 export const getMe = async (req, res) => {
   try {
-    // req.user is attached by the `protect` middleware after verifying the JWT
     const user = req.user;
 
     if (!user) {
