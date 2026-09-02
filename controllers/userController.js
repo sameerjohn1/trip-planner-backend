@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import User from "../models/User.js";
+import User from "../models/user.js";
 import HTTP_STATUS from "../constants/httpStatus.js";
 import { sendSuccess, sendError } from "../utils/response.js";
 import generateToken from "../utils/generateToken.js";
