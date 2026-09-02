@@ -191,13 +191,11 @@ export const loginUser = async (req, res) => {
       );
     }
 
-    // Find user — explicitly select password since schema has select:false
+    // Find user
     const user = await User.findOne({ email: normalizedEmail }).select(
       "+password",
     );
 
-    // Same error for "not found" and "wrong password" — avoids leaking
-    // which emails are registered (basic security best practice)
     if (!user) {
       return sendError(
         res,
