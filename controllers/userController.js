@@ -225,7 +225,7 @@ export const loginUser = async (req, res) => {
     }
 
     // Generate JWT
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.tokenVersion);
 
     return sendSuccess(res, HTTP_STATUS.OK, "Login successful", {
       token,
@@ -279,6 +279,31 @@ export const getMe = async (req, res) => {
     );
   } catch (error) {
     console.error("Get me error:", error);
+
+    return sendError(
+      res,
+      HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      "Internal server error",
+    );
+  }
+};
+
+// logout
+export const logoutUser = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.user._id, {
+      $inc: { tokenVersion: 1 },
+    });
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return sendSuccess(res, HTTP_STATUS.OK, "Logout successful");
+  } catch (error) {
+    console.error("Logout user error:", error);
 
     return sendError(
       res,
