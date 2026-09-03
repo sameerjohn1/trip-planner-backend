@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./configs/db.js";
 import authRoutes from "./routes/userRoutes.js";
+import destinationRoute from "./routes/destinationRoute.js";
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use(async (req, res, next) => {
 
 // ---------- Auth Routes ----------
 app.use("/auth", authRoutes);
+app.use("/api/destinations", destinationRoute);
 
 // ---------- 404 Handler ----------
 app.use((req, res) => {
