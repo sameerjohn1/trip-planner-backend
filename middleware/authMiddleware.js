@@ -63,6 +63,14 @@ export const protect = async (req, res, next) => {
       );
     }
 
+    if (decoded.tokenVersion !== user.tokenVersion) {
+      return sendError(
+        res,
+        HTTP_STATUS.UNAUTHORIZED,
+        "Session has been logged out, please log in again",
+      );
+    }
+
     // Attach user to request object for use in downstream controllers
     req.user = user;
 
