@@ -2,18 +2,63 @@ import mongoose from "mongoose";
 
 const destinationSchema = new mongoose.Schema(
   {
+    tripId: {
+      type: Number,
+      unique: true,
+      index: true,
+    },
+
+    title: {
+      type: String,
+      trim: true,
+    },
+
+    location: {
+      type: String,
+      trim: true,
+    },
+
+    duration: {
+      type: String,
+      trim: true,
+    },
+
+    price: {
+      type: Number,
+      min: 0,
+    },
+
+    rating: {
+      type: Number,
+      min: 0,
+      max: 5,
+    },
+
+    category: {
+      type: String,
+      trim: true,
+    },
+
+    image: {
+      type: String,
+      trim: true,
+    },
+
     name: {
       type: String,
       required: [true, "Destination name is required"],
       trim: true,
     },
+
     country: {
       type: String,
       required: [true, "Country is required"],
       trim: true,
     },
+
     region: {
       type: String,
+      required: [true, "Region is required"],
       enum: {
         values: [
           "Asia",
@@ -26,22 +71,26 @@ const destinationSchema = new mongoose.Schema(
         ],
         message: "{VALUE} is not a supported region",
       },
-      required: [true, "Region is required"],
     },
+
     description: {
       type: String,
+      required: [true, "Description is required"],
       trim: true,
       maxlength: [1000, "Description cannot exceed 1000 characters"],
     },
+
     imageUrl: {
       type: String,
       trim: true,
     },
+
     averageDailyCost: {
       type: Number,
       required: [true, "Average daily cost is required"],
       min: [0, "Cost cannot be negative"],
     },
+
     bestSeason: {
       type: String,
       enum: {
@@ -50,6 +99,7 @@ const destinationSchema = new mongoose.Schema(
       },
       default: "Year-round",
     },
+
     tags: [
       {
         type: String,
@@ -62,11 +112,16 @@ const destinationSchema = new mongoose.Schema(
           "Relaxation",
           "Wildlife",
           "Historical",
+          "Nature",
+          "Luxury",
+          "Romantic",
         ],
       },
     ],
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
 export default mongoose.model("Destination", destinationSchema);
